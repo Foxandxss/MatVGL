@@ -17,9 +17,9 @@ if(UNIX AND NOT APPLE) # Check for GNU/Linux systems.
   set(LINK_LIBRARIES)
 
   # Set the source and header files for Linux systems.
-  set(SOURCE_FILES
+  set(SPECIFIC_SOURCE_FILES
       ${CMAKE_SOURCE_DIR}/src/MatVGLSDL2Engine.cpp)
-  set(HEADER_FILES
+  set(SPECIFIC_HEADER_FILES
       ${HEADER_FILES}
       ${CMAKE_SOURCE_DIR}/include/linux/MatVGLSDL2Engine.hpp)
 
@@ -41,7 +41,8 @@ include_directories(
 
 # The library itself.
 add_library(${LIB_NAME} SHARED
-            ${SOURCE_FILES}
+            ${SPECIFIC_SOURCE_FILES}
+            ${SPECIFIC_HEADER_FILES}
             ${HEADER_FILES})
 
 # And the libraries to be linked.
