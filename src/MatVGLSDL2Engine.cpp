@@ -5,6 +5,13 @@ MatVGL::SDL2Engine::SDL2Engine() {
   p_bgColor.green = 255;
   p_bgColor.blue = 255;
   p_bgColor.alpha = 255;
+
+  p_isStartingUp = false;
+  p_isReadyForUse = false;
+  p_isShuttingDown = false;
+
+  p_viewportHeight = 0;
+  p_viewportWidth = 0;
 }
 
 void MatVGL::SDL2Engine::startEngine() {}
@@ -15,7 +22,9 @@ void MatVGL::SDL2Engine::endFrame() {}
 
 void MatVGL::SDL2Engine::shutDown() {}
 
-bool MatVGL::SDL2Engine::sleepForFrameLimit(UInt32 maxFrameRate) {}
+bool MatVGL::SDL2Engine::sleepForFrameLimit(UInt32 maxFrameRate) {
+  return false;
+}
 
 void MatVGL::SDL2Engine::setBackgroundColor(Int16 red, Int16 green, Int16 blue,
                                             Int16 alpha) {
@@ -32,12 +41,12 @@ void MatVGL::SDL2Engine::setBackgroundColor(Int16 red, Int16 green, Int16 blue,
   }
 }
 
-bool MatVGL::SDL2Engine::isStartingUp() {}
+bool MatVGL::SDL2Engine::isStartingUp() { return p_isStartingUp; }
 
-bool MatVGL::SDL2Engine::isReadyForUse() {}
+bool MatVGL::SDL2Engine::isReadyForUse() { return p_isReadyForUse; }
 
-bool MatVGL::SDL2Engine::isShuttingDown() {}
+bool MatVGL::SDL2Engine::isShuttingDown() { return p_isShuttingDown; }
 
-Int32 MatVGL::SDL2Engine::getViewportWidth() {}
+UInt32 MatVGL::SDL2Engine::getViewportWidth() { return p_viewportWidth; }
 
-Int32 MatVGL::SDL2Engine::getViewportHeight() {}
+UInt32 MatVGL::SDL2Engine::getViewportHeight() { return p_viewportHeight; }

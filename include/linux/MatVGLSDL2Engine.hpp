@@ -23,8 +23,8 @@ public:
   bool isStartingUp();
   bool isReadyForUse();
   bool isShuttingDown();
-  Int32 getViewportWidth();
-  Int32 getViewportHeight();
+  UInt32 getViewportWidth();
+  UInt32 getViewportHeight();
 };
 }
 

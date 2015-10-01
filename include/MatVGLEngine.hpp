@@ -20,8 +20,8 @@ public:
   virtual bool isStartingUp() = 0;
   virtual bool isReadyForUse() = 0;
   virtual bool isShuttingDown() = 0;
-  virtual Int32 getViewportWidth() = 0;
-  virtual Int32 getViewportHeight() = 0;
+  virtual UInt32 getViewportWidth() = 0;
+  virtual UInt32 getViewportHeight() = 0;
 
 private:
   struct BackgroundColor {
@@ -33,6 +33,11 @@ private:
 
 protected:
   BackgroundColor p_bgColor;
+  bool p_isStartingUp;
+  bool p_isReadyForUse;
+  bool p_isShuttingDown;
+  UInt32 p_viewportWidth;
+  UInt32 p_viewportHeight;
 };
 }
 
