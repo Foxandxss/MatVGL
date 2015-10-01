@@ -9,12 +9,14 @@ set(HEADER_FILES
 if(UNIX AND NOT APPLE) # Check for GNU/Linux systems.
   # Create the specific includes for GNU/Linux systems.
   set(SPECIFIC_INCLUDE_DIRECTORIES
-      ${CMAKE_SOURCE_DIR}/include/linux)
+      ${CMAKE_SOURCE_DIR}/include/linux
+      ${OPENGL_INCLUDE_DIR})
   # Set the library name for GNU/Linux systems.
   set(LIB_NAME
       matvgl)
   # Set the linked libraries for GNU/Linux systems.
-  set(LINK_LIBRARIES)
+  set(LINK_LIBRARIES
+      ${OPENGL_LIBRARIES})
 
   # Set the source and header files for Linux systems.
   set(SPECIFIC_SOURCE_FILES
