@@ -27,8 +27,8 @@ if(UNIX AND NOT APPLE) # Check for GNU/Linux systems.
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
        CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-      set(CMAKE_C_FLAGS "-Wall -g -O0 -ggdb")
-      set(CMAKE_CXX_FLAGS "-Wall -g -O0 -ggdb -std=c++11")
+      set(CMAKE_C_FLAGS "-Wall -g3 -O0 -ggdb3")
+      set(CMAKE_CXX_FLAGS "-Wall -g3 -O0 -ggdb3 -std=c++11")
     endif()
   endif()
 endif()
