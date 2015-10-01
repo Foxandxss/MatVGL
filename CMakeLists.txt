@@ -16,18 +16,25 @@ if(UNIX AND NOT APPLE)
       ${CMAKE_SOURCE_DIR}/include/linux/MatVGLSDL2Engine.hpp)
 
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(CMAKE_C_FLAGS "-Wall -g -O0")
-    set(CMAKE_CXX_FLAGS "-Wall -g -O0 -std=c++11")
+    if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
+       CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+      set(CMAKE_C_FLAGS "-Wall -g -O0 -ggdb")
+      set(CMAKE_CXX_FLAGS "-Wall -g -O0 -ggdb -std=c++11")
+    endif()
   endif()
 endif()
 
-include_directories(${SPECIFIC_INCLUDE_DIRECTORIES}
+message(STATUS "C FLAGS: ${CMAKE_C_FLAGS}")
+message(STATUS "CXX FLAGS: ${CMAKE_CXX_FLAGS}")
+
+include_directories(
+  ${SPECIFIC_INCLUDE_DIRECTORIES}
   ${CMAKE_SOURCE_DIR}
   ${CMAKE_SOURCE_DIR}/include)
 
 add_library(${LIB_NAME} SHARED
-  ${SOURCE_FILES}
-  ${HEADER_FILES})
+            ${SOURCE_FILES}
+            ${HEADER_FILES})
 
 target_link_libraries(${LIB_NAME}
-  ${LINK_LIBRARIES})
+                      ${LINK_LIBRARIES})
