@@ -20,6 +20,8 @@
 #include "MatVGLEngine.hpp"
 #include "stdafx.h"
 
+#include <GL/glew.h>
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
@@ -40,6 +42,7 @@ public:
   bool sleepForFrameLimit(UInt32 maxFrameRate);
 
   void setBackgroundColor(Int16 red, Int16 green, Int16 blue, Int16 alpha);
+  void adjustViewport();
 
   bool isStartingUp();
   bool isReadyForUse();
@@ -50,6 +53,11 @@ public:
 private:
   SDL_Window *_window;
   SDL_GLContext _glContext;
+
+  UInt32 _windowX;
+  UInt32 _windowY;
+  UInt32 _windowW;
+  UInt32 _windowH;
 };
 }
 

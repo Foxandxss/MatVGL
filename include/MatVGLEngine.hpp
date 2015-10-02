@@ -34,6 +34,7 @@ public:
 
   virtual void setBackgroundColor(Int16 red, Int16 green, Int16 blue,
                                   Int16 alpha) = 0;
+    virtual void adjustViewport() = 0;
 
   virtual bool isStartingUp() = 0;
   virtual bool isReadyForUse() = 0;
