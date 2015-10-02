@@ -30,13 +30,36 @@ MatVGL::SDL2Engine::SDL2Engine() {
   p_viewportWidth = 0;
 }
 
+MatVGL::Engine *MatVGL::SDL2Engine::createGameEngine() {
+  static MatVGL::SDL2Engine *s_gameEngine = nullptr;
+  if (!s_gameEngine) {
+    s_gameEngine = new MatVGL::SDL2Engine();
+  }
+
+  return s_gameEngine;
+}
+
 void MatVGL::SDL2Engine::startEngine() {}
 
-void MatVGL::SDL2Engine::startFrame() {}
+void MatVGL::SDL2Engine::startFrame() {
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+}
 
-void MatVGL::SDL2Engine::endFrame() {}
+void MatVGL::SDL2Engine::endFrame() { SDL_GL_SwapWindow(_window); }
 
-void MatVGL::SDL2Engine::shutDown() {}
+void MatVGL::SDL2Engine::shutDown() {
+  p_isShuttingDown = true;
+
+  if (_glContext) {
+    SDL_GL_DeleteContext(_glContext);
+  }
+
+  if (_window) {
+    SDL_DestroyWindow(_window);
+  }
+
+  SDL_Quit();
+}
 
 bool MatVGL::SDL2Engine::sleepForFrameLimit(UInt32 maxFrameRate) {
   return false;

@@ -23,6 +23,8 @@ namespace MatVGL {
 class Engine {
 public:
   virtual ~Engine() {}
+
+  virtual Engine *createGameEngine() = 0;
   virtual void startEngine() = 0;
   virtual void startFrame() = 0;
   virtual void endFrame() = 0;

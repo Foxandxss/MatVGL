@@ -20,13 +20,18 @@
 #include "MatVGLEngine.hpp"
 #include "stdafx.h"
 
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
+
 #include <GL/gl.h>
 
 namespace MatVGL {
 class SDL2Engine : public Engine {
 public:
   SDL2Engine();
+  ~SDL2Engine();
 
+  Engine *createGameEngine();
   void startEngine();
   void startFrame();
   void endFrame();
@@ -41,6 +46,10 @@ public:
   bool isShuttingDown();
   UInt32 getViewportWidth();
   UInt32 getViewportHeight();
+
+private:
+  SDL_Window *_window;
+  SDL_GLContext _glContext;
 };
 }
 
