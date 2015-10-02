@@ -40,13 +40,33 @@ public:
 
   bool sleepForFrameLimit(UInt32 maxFrameRate);
 
+  void setWindowTitle(const char *title);
+  void setWindowPosition(UInt32 x, UInt32 y);
+  void setWindowSize(UInt32 width, UInt32 height);
   void setBackgroundColor(Int16 red, Int16 green, Int16 blue, Int16 alpha);
   void adjustViewport();
+  void setViewportPosition(UInt32 x, UInt32 y);
+  void setViewportSize(UInt32 width, UInt32 height);
 
   bool isStartingUp();
   bool isReadyForUse();
   bool isShuttingDown();
   bool hasTheUserXedOut();
+
+  WindowProperties getWindowProperties();
+  BackgroundColor getWindowBackgroundColor();
+  ViewportProperties getViewportProperties();
+
+  UInt32 getWindowX();
+  UInt32 getWindowY();
+  UInt32 getWindowWidth();
+  UInt32 getWindowHeight();
+  Int16 getBackgroundRed();
+  Int16 getBackgroundGreen();
+  Int16 getBackgroundBlue();
+  Int16 getBackgroundAlpha();
+  UInt32 getViewportX();
+  UInt32 getViewportY();
   UInt32 getViewportWidth();
   UInt32 getViewportHeight();
 
@@ -54,11 +74,6 @@ private:
   SDL_Window *_window;
   SDL_GLContext _glContext;
   SDL_Event _event;
-
-  UInt32 _windowX;
-  UInt32 _windowY;
-  UInt32 _windowW;
-  UInt32 _windowH;
 };
 }
 

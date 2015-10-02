@@ -21,6 +21,37 @@
 
 namespace MatVGL {
 class Engine {
+protected:
+  struct BackgroundColor {
+    Int16 red;
+    Int16 green;
+    Int16 blue;
+    Int16 alpha;
+  };
+
+  struct WindowProperties {
+    const char *title;
+    UInt32 x;
+    UInt32 y;
+    UInt32 width;
+    UInt32 height;
+  };
+
+  struct ViewportProperties {
+    UInt32 x;
+    UInt32 y;
+    UInt32 width;
+    UInt32 height;
+  };
+
+  BackgroundColor p_bgColor;
+  WindowProperties p_windowProperties;
+  ViewportProperties p_viewportProperties;
+
+  bool p_isStartingUp;
+  bool p_isReadyForUse;
+  bool p_isShuttingDown;
+
 public:
   virtual ~Engine() {}
 
@@ -31,32 +62,36 @@ public:
 
   virtual bool sleepForFrameLimit(UInt32 maxFrameRate) = 0;
 
+  virtual void setWindowTitle(const char *title) = 0;
+  virtual void setWindowPosition(UInt32 x, UInt32 y) = 0;
+  virtual void setWindowSize(UInt32 width, UInt32 height) = 0;
   virtual void setBackgroundColor(Int16 red, Int16 green, Int16 blue,
                                   Int16 alpha) = 0;
   virtual void adjustViewport() = 0;
+  virtual void setViewportPosition(UInt32 x, UInt32 y) = 0;
+  virtual void setViewportSize(UInt32 width, UInt32 height) = 0;
 
   virtual bool isStartingUp() = 0;
   virtual bool isReadyForUse() = 0;
   virtual bool isShuttingDown() = 0;
   virtual bool hasTheUserXedOut() = 0;
+
+  virtual WindowProperties getWindowProperties() = 0;
+  virtual BackgroundColor getWindowBackgroundColor() = 0;
+  virtual ViewportProperties getViewportProperties() = 0;
+
+  virtual UInt32 getWindowX() = 0;
+  virtual UInt32 getWindowY() = 0;
+  virtual UInt32 getWindowWidth() = 0;
+  virtual UInt32 getWindowHeight() = 0;
+  virtual Int16 getBackgroundRed() = 0;
+  virtual Int16 getBackgroundGreen() = 0;
+  virtual Int16 getBackgroundBlue() = 0;
+  virtual Int16 getBackgroundAlpha() = 0;
+  virtual UInt32 getViewportX() = 0;
+  virtual UInt32 getViewportY() = 0;
   virtual UInt32 getViewportWidth() = 0;
   virtual UInt32 getViewportHeight() = 0;
-
-private:
-  struct BackgroundColor {
-    Int16 red;
-    Int16 green;
-    Int16 blue;
-    Int16 alpha;
-  };
-
-protected:
-  BackgroundColor p_bgColor;
-  bool p_isStartingUp;
-  bool p_isReadyForUse;
-  bool p_isShuttingDown;
-  UInt32 p_viewportWidth;
-  UInt32 p_viewportHeight;
 };
 
 Engine *createGameEngine();
