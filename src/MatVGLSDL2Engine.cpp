@@ -47,9 +47,13 @@ MatVGL::SDL2Engine::SDL2Engine() {
   this->_windowH = 0;
 }
 
-MatVGL::SDL2Engine::~SDL2Engine() { this->shutDown(); }
+MatVGL::SDL2Engine::~SDL2Engine() {
+  this->shutDown();
+}
 
 void MatVGL::SDL2Engine::startEngine() {
+  p_isStartingUp = true;
+
   SDL_Init(SDL_INIT_VIDEO);
 
   this->_windowX = SDL_WINDOWPOS_CENTERED;
@@ -82,6 +86,9 @@ void MatVGL::SDL2Engine::startEngine() {
   glDepthRange(0.0f, 1.0f);
 
   this->adjustViewport();
+
+  p_isStartingUp = false;
+  p_isReadyForUse = true;
 }
 
 void MatVGL::SDL2Engine::startFrame() {
@@ -92,6 +99,7 @@ void MatVGL::SDL2Engine::endFrame() { SDL_GL_SwapWindow(_window); }
 
 void MatVGL::SDL2Engine::shutDown() {
   p_isShuttingDown = true;
+  p_isReadyForUse = false;
 
   if (_glContext) {
     SDL_GL_DeleteContext(_glContext);
@@ -102,6 +110,8 @@ void MatVGL::SDL2Engine::shutDown() {
   }
 
   SDL_Quit();
+
+  p_isShuttingDown = false;
 }
 
 bool MatVGL::SDL2Engine::sleepForFrameLimit(UInt32 maxFrameRate) {
@@ -140,16 +150,15 @@ bool MatVGL::SDL2Engine::isReadyForUse() { return p_isReadyForUse; }
 
 bool MatVGL::SDL2Engine::isShuttingDown() { return p_isShuttingDown; }
 
-bool MatVGL::SDL2Engine::hasTheUserXedOut()
-{
-    while (SDL_PollEvent(&_event) != 0) {
-        if (_event.type == SDL_QUIT) {
-            return true;
-        }
-        return false;
+bool MatVGL::SDL2Engine::hasTheUserXedOut() {
+  while (SDL_PollEvent(&_event) != 0) {
+    if (_event.type == SDL_QUIT) {
+      return true;
     }
-
     return false;
+  }
+
+  return false;
 }
 
 UInt32 MatVGL::SDL2Engine::getViewportWidth() { return p_viewportWidth; }
