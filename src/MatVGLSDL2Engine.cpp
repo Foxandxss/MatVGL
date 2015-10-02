@@ -140,6 +140,18 @@ bool MatVGL::SDL2Engine::isReadyForUse() { return p_isReadyForUse; }
 
 bool MatVGL::SDL2Engine::isShuttingDown() { return p_isShuttingDown; }
 
+bool MatVGL::SDL2Engine::hasTheUserXedOut()
+{
+    while (SDL_PollEvent(&_event) != 0) {
+        if (_event.type == SDL_QUIT) {
+            return true;
+        }
+        return false;
+    }
+
+    return false;
+}
+
 UInt32 MatVGL::SDL2Engine::getViewportWidth() { return p_viewportWidth; }
 
 UInt32 MatVGL::SDL2Engine::getViewportHeight() { return p_viewportHeight; }

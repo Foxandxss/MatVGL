@@ -38,6 +38,7 @@ public:
   virtual bool isStartingUp() = 0;
   virtual bool isReadyForUse() = 0;
   virtual bool isShuttingDown() = 0;
+  virtual bool hasTheUserXedOut() = 0;
   virtual UInt32 getViewportWidth() = 0;
   virtual UInt32 getViewportHeight() = 0;
 

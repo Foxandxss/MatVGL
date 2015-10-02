@@ -46,12 +46,14 @@ public:
   bool isStartingUp();
   bool isReadyForUse();
   bool isShuttingDown();
+  bool hasTheUserXedOut();
   UInt32 getViewportWidth();
   UInt32 getViewportHeight();
 
 private:
   SDL_Window *_window;
   SDL_GLContext _glContext;
+  SDL_Event _event;
 
   UInt32 _windowX;
   UInt32 _windowY;
