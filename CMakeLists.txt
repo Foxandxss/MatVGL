@@ -23,15 +23,27 @@ set(HEADER_FILES
     ${CMAKE_SOURCE_DIR}/include/stdafx.h)
 
 if(UNIX AND NOT APPLE) # Check for GNU/Linux systems.
+  # Find the required modules.
+  find_package(GLEW REQUIRED)
+
+  include(FindPkgConfig)
+  pkg_search_module(SDL2 REQUIRED sdl2)
+
+  find_package(OpenGL REQUIRED)
+
   # Create the specific includes for GNU/Linux systems.
   set(SPECIFIC_INCLUDE_DIRECTORIES
       ${CMAKE_SOURCE_DIR}/include/linux
+      ${GLEW_INCLUDE_DIRS}
+      ${SDL2_INCLUDE_DIRS}
       ${OPENGL_INCLUDE_DIR})
   # Set the library name for GNU/Linux systems.
   set(LIB_NAME
       matvgl)
   # Set the linked libraries for GNU/Linux systems.
   set(LINK_LIBRARIES
+      ${GLEW_LIBRARIES}
+      ${SDL2_LIBRARIES}
       ${OPENGL_LIBRARIES})
 
   # Set the source and header files for Linux systems.
