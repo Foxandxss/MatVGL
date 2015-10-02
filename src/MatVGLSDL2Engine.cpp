@@ -16,6 +16,15 @@
 
 #include "MatVGLSDL2Engine.hpp"
 
+MatVGL::Engine *MatVGL::createGameEngine() {
+  static MatVGL::SDL2Engine *s_gameEngine = nullptr;
+  if (!s_gameEngine) {
+    s_gameEngine = new MatVGL::SDL2Engine();
+  }
+
+  return s_gameEngine;
+}
+
 MatVGL::SDL2Engine::SDL2Engine() {
   p_bgColor.red = 255;
   p_bgColor.green = 255;
@@ -38,14 +47,7 @@ MatVGL::SDL2Engine::SDL2Engine() {
   this->_windowH = 0;
 }
 
-MatVGL::Engine *MatVGL::SDL2Engine::createGameEngine() {
-  static MatVGL::SDL2Engine *s_gameEngine = nullptr;
-  if (!s_gameEngine) {
-    s_gameEngine = new MatVGL::SDL2Engine();
-  }
-
-  return s_gameEngine;
-}
+MatVGL::SDL2Engine::~SDL2Engine() { this->shutDown(); }
 
 void MatVGL::SDL2Engine::startEngine() {
   SDL_Init(SDL_INIT_VIDEO);

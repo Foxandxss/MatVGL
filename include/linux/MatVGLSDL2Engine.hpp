@@ -33,7 +33,6 @@ public:
   SDL2Engine();
   ~SDL2Engine();
 
-  Engine *createGameEngine();
   void startEngine();
   void startFrame();
   void endFrame();

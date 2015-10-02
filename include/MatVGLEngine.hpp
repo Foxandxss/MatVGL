@@ -24,7 +24,6 @@ class Engine {
 public:
   virtual ~Engine() {}
 
-  virtual Engine *createGameEngine() = 0;
   virtual void startEngine() = 0;
   virtual void startFrame() = 0;
   virtual void endFrame() = 0;
@@ -34,7 +33,7 @@ public:
 
   virtual void setBackgroundColor(Int16 red, Int16 green, Int16 blue,
                                   Int16 alpha) = 0;
-    virtual void adjustViewport() = 0;
+  virtual void adjustViewport() = 0;
 
   virtual bool isStartingUp() = 0;
   virtual bool isReadyForUse() = 0;
@@ -58,6 +57,8 @@ protected:
   UInt32 p_viewportWidth;
   UInt32 p_viewportHeight;
 };
+
+Engine *createGameEngine();
 }
 
 #endif // MATVGLENGINE_HPP
