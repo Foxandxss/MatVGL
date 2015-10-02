@@ -26,3 +26,9 @@
 *.exe
 *.out
 *.app
+
+# Configuration files
+*.user
+
+# Directories with binaries
+bin/*
