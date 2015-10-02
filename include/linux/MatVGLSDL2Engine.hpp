@@ -57,6 +57,8 @@ public:
   BackgroundColor getWindowBackgroundColor();
   ViewportProperties getViewportProperties();
 
+  const char *getWindowTitle();
+
   UInt32 getWindowX();
   UInt32 getWindowY();
   UInt32 getWindowWidth();

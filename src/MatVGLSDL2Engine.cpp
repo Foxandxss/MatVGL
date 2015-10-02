@@ -276,6 +276,10 @@ MatVGL::Engine::ViewportProperties MatVGL::SDL2Engine::getViewportProperties() {
   return p_viewportProperties;
 }
 
+const char *MatVGL::SDL2Engine::getWindowTitle() {
+  return p_windowProperties.title;
+}
+
 UInt32 MatVGL::SDL2Engine::getWindowX() { return p_windowProperties.x; }
 
 UInt32 MatVGL::SDL2Engine::getWindowY() { return p_windowProperties.y; }

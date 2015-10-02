@@ -80,6 +80,8 @@ public:
   virtual BackgroundColor getWindowBackgroundColor() = 0;
   virtual ViewportProperties getViewportProperties() = 0;
 
+  virtual const char *getWindowTitle() = 0;
+
   virtual UInt32 getWindowX() = 0;
   virtual UInt32 getWindowY() = 0;
   virtual UInt32 getWindowWidth() = 0;
