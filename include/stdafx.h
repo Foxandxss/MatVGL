@@ -17,7 +17,8 @@
 #ifndef STDAFX_H
 #define STDAFX_H
 
-#if defined(__linux__)
+// OS that use standard C/C++ (AKA not Windows systems).
+#if defined(__linux__) || defined(__APPLE__ && __MACH__)
 
 #include <stdint.h>
 
