@@ -19,8 +19,6 @@ cmake_minimum_required(VERSION 2.8) # The minimum CMAKE version.
 
 # The common header files for all platforms.
 set(HEADER_FILES
-    ${CMAKE_SOURCE_DIR}/include/MatVGLEngine.hpp
-    ${CMAKE_SOURCE_DIR}/include/MatVGLExceptions.hpp
     ${CMAKE_SOURCE_DIR}/include/stdafx.h)
 
 if(UNIX AND NOT APPLE) # Check for GNU/Linux systems.
@@ -48,12 +46,9 @@ if(UNIX AND NOT APPLE) # Check for GNU/Linux systems.
       ${OPENGL_LIBRARIES})
 
   # Set the source and header files for Linux systems.
-  set(SPECIFIC_SOURCE_FILES
-      ${CMAKE_SOURCE_DIR}/src/MatVGLSDL2Engine.cpp
-      ${CMAKE_SOURCE_DIR}/src/MatVGLSyslogExceptions.cpp)
+  set(SPECIFIC_SOURCE_FILES)
   set(SPECIFIC_HEADER_FILES
-      ${HEADER_FILES}
-      ${CMAKE_SOURCE_DIR}/include/linux/MatVGLSDL2Engine.hpp)
+      ${HEADER_FILES})
 
   # Set the flags for build type and for compiler ID.
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
