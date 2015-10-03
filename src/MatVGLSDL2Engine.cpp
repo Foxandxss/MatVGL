@@ -121,25 +121,28 @@ void MatVGL::SDL2Engine::endFrame() {
 }
 
 void MatVGL::SDL2Engine::shutDown() {
-  // Inform that we are shutting the engine down.
-  p_isShuttingDown = true;
-  p_isReadyForUse = false;
+  // If the engine isn't ready for use, we don't need shutting it down.
+  if (p_isReadyForUse) {
+    // Inform that we are shutting the engine down.
+    p_isShuttingDown = true;
+    p_isReadyForUse = false;
 
-  // Destroy the GL context.
-  if (_glContext) {
-    SDL_GL_DeleteContext(this->_glContext);
+    // Destroy the GL context.
+    if (_glContext) {
+      SDL_GL_DeleteContext(this->_glContext);
+    }
+
+    // Destroy the SDL window.
+    if (_window) {
+      SDL_DestroyWindow(this->_window);
+    }
+
+    // Quit SDL2.
+    SDL_Quit();
+
+    // We finished shutting down.
+    p_isShuttingDown = false;
   }
-
-  // Destroy the SDL window.
-  if (_window) {
-    SDL_DestroyWindow(this->_window);
-  }
-
-  // Quit SDL2.
-  SDL_Quit();
-
-  // We finished shutting down.
-  p_isShuttingDown = false;
 }
 
 bool MatVGL::SDL2Engine::sleepForFrameLimit(UInt32 maxFrameRate) {
