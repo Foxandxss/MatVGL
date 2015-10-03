@@ -53,8 +53,7 @@ if(UNIX AND NOT APPLE) # Check for GNU/Linux systems.
       ${CMAKE_SOURCE_DIR}/src/MatVGLSyslogExceptions.cpp)
   set(SPECIFIC_HEADER_FILES
       ${HEADER_FILES}
-      ${CMAKE_SOURCE_DIR}/include/linux/MatVGLSDL2Engine.hpp
-      ${CMAKE_SOURCE_DIR}/include/linux/MatVGLSyslogExceptions.hpp)
+      ${CMAKE_SOURCE_DIR}/include/linux/MatVGLSDL2Engine.hpp)
 
   # Set the flags for build type and for compiler ID.
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
