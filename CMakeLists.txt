@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 2.8)
 if(UNIX AND NOT APPLE)
   include(FindPkgConfig)
   find_package(GLEW REQUIRED)
-  pkg_search_module(SDL2 REQUIRED)
+  pkg_search_module(SDL2 REQUIRED sdl2)
   find_package(OpenGL REQUIRED)
 
   set(LINK_LIBRARIES
