@@ -26,9 +26,12 @@
 *.exe
 *.out
 *.app
+<<<<<<< HEAD
 
 # Configuration files
 *.user
 
 # Directories with binaries
 bin/*
+=======
+>>>>>>> be29f3e36cf8c8570c8455fbbabca781ea82ae02
