@@ -16,17 +16,22 @@
 
 #include "MatVGL_Engine.hpp"
 
+// The setters work the same way, just each for their own variables.
 void MatVGL::Engine::setWindowTitle(const char *title) {
+  // We set the variable as asked.
   MatVGL::Engine::windowTitle = title;
+  // Then we check if the window is open and, if it is, we update it.
   if (window) {
     SDL_SetWindowTitle(MatVGL::Engine::window, title);
   }
 }
 
+// The getters simply return the desired variable.
 const char *MatVGL::Engine::getWindowTitle() {
   return MatVGL::Engine::windowTitle;
 }
 
+// Even if this one has two variables, the concept is the same.
 void MatVGL::Engine::setWindowPosition(UInt32 x, UInt32 y) {
   windowPosition.x = x;
   windowPosition.y = y;
@@ -36,6 +41,9 @@ void MatVGL::Engine::setWindowPosition(UInt32 x, UInt32 y) {
   }
 }
 
+// These special ones also return two variables at once, in the form of a
+// struct. There's not really a getX position, it's just a getPosition.x or
+// getPosition.y. The same applies for other structs being get.
 MatVGL::Engine::WindowPosition MatVGL::Engine::getWindowPosition() {
   return windowPosition;
 }
@@ -53,6 +61,8 @@ MatVGL::Engine::WindowSize MatVGL::Engine::getWindowSize() {
   return windowSize;
 }
 
+// This one allows us to change both the positon and th size of the window at
+// the same time.
 void MatVGL::Engine::adjustWindow(UInt32 x, UInt32 y, UInt32 w, UInt32 h) {
   windowPosition.x = x;
   windowPosition.y = y;
@@ -87,6 +97,8 @@ MatVGL::Engine::ViewportSize MatVGL::Engine::getViewportSize() {
   return viewportSize;
 }
 
+// This one simply sets the viewport to start at (0, 0) and be of the same size
+// as the window, adjusting it.
 void MatVGL::Engine::adjustViewport() {
   SDL_GetWindowSize(window, (Int32 *)&windowSize.w, (Int32 *)&windowSize.h);
   viewportPosition.x = 0;
@@ -98,6 +110,8 @@ void MatVGL::Engine::adjustViewport() {
              viewportSize.h);
 }
 
+// The overloaded counterpart to the adjustViewport() simply allows us to change
+// both the position and the size at the same time.
 void MatVGL::Engine::adjustViewport(UInt32 x, UInt32 y, UInt32 w, UInt32 h) {
   viewportPosition.x = x;
   viewportPosition.y = y;
@@ -125,24 +139,45 @@ bool MatVGL::Engine::getIsReadyForUse() { return isReadyForUse; }
 bool MatVGL::Engine::getIsStopping() { return isStopping; }
 
 bool MatVGL::Engine::getUserHasXedOut() {
+  // We check if there is a window.
   if (window) {
+    // If there is, we get the events that are being received.
     while (SDL_PollEvent(&event) != 0) {
+      // If one of those events is the SDL_QUIT event.
       if (event.type == SDL_QUIT) {
+        // We can say it's true we are quitting.
         return true;
       }
 
+      // In any other case, we say it's false.
       return false;
     }
   }
 
+  // There isn't a window, so we can assume this is false.
   return false;
 }
 
 void MatVGL::Engine::start() {
+  // We first initialize the needed SDL modules, and throw an exception on
+  // error. Note that the static_cast in these throws is allowing us to combine
+  // several string literals and constants into a single one, which is what is
+  // asked by the function, a single string.
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-    throw MatVGL::Engine::StartFailure(SDL_GetError());
+    throw MatVGL::Engine::StartFailure(
+        static_cast<std::stringstream &>(
+            std::stringstream()
+            << "Failed to initialize the SDL modules: " << SDL_GetError())
+            .str()
+            .c_str());
   }
 
+  // Now we set several GL attributes through SDL's functions, and throw
+  // exceptions if there is an error. Note that these are meant to mark how the
+  // engine will be coded, the version of OpenGL with the Core profile, hence
+  // why they also throw a start failure exception, which means the engine
+  // couldn't start properly, instead of a different exception that users could
+  // ignore.
   if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3) < 0) {
     throw MatVGL::Engine::StartFailure(
         static_cast<std::stringstream &>(
@@ -172,13 +207,20 @@ void MatVGL::Engine::start() {
             .c_str());
   }
 
+  // Now we can set the window in a centered position.
   MatVGL::Engine::setWindowPosition(SDL_WINDOWPOS_CENTERED,
                                     SDL_WINDOWPOS_CENTERED);
+  // And create it. We don't need the size of the window, since it will be a
+  // full screen desktop window, which adapts to the size of the screen.
+  //
+  // TODO: add the possibility to create different kind of windows, at least a
+  // normal window (maximizable and not maximizable) and a real full screen
+  // window
   window = SDL_CreateWindow(windowTitle, windowPosition.x, windowPosition.y,
                             windowSize.w, windowSize.h,
                             SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN |
                                 SDL_WINDOW_FULLSCREEN_DESKTOP);
-  if (!window) {
+  if (!window) { // If the window failed to be created, throw an exception.
     throw MatVGL::Engine::StartFailure(
         static_cast<std::stringstream &>(std::stringstream()
                                          << "Failed to create the SDL window: "
@@ -186,8 +228,14 @@ void MatVGL::Engine::start() {
             .str()
             .c_str());
   }
+  // Now that the window is full screen and created, we can set the size
+  // variables in the struct to those of the window, so that the struct
+  // information is real and correct. Note that SDL2 needs int (int32_t/Int32),
+  // hence why it's being casted into it.
   SDL_GetWindowSize(window, (Int32 *)&windowSize.w, (Int32 *)&windowSize.h);
 
+  // We can now create the SDL GL context for the window, also checking for
+  // errors.
   context = SDL_GL_CreateContext(window);
   if (!context) {
     throw MatVGL::Engine::StartFailure(
@@ -198,6 +246,8 @@ void MatVGL::Engine::start() {
             .c_str());
   }
 
+  // After all of this, we will initialize GLEW, checking for possible errors to
+  // throw.
   GLenum glewError = glewInit();
   if (glewError != GLEW_OK) {
     throw MatVGL::Engine::StartFailure(
@@ -208,12 +258,16 @@ void MatVGL::Engine::start() {
             .c_str());
   }
 
+  // With all initialize, we set the default background color.
   glClearColor((float)bgColor.r / 250.0f, (float)bgColor.g / 250.0f,
                (float)bgColor.b / 250.0f, (float)bgColor.a / 250.0f);
-  adjustViewport();
+  // And we adjust the viewport to the window by default.
+  MatVGL::Engine::adjustViewport();
 }
 
 void MatVGL::Engine::stop() {
+  // This is a cleaning function, equivalent to a destructor in a class. We need
+  // to destroy everything we've created and quit all of the SDL modules.
   if (context) {
     SDL_GL_DeleteContext(context);
   }
@@ -223,25 +277,53 @@ void MatVGL::Engine::stop() {
   SDL_Quit();
 }
 
-MatVGL::Engine::StartFailure::StartFailure() : extraInfo_("") {}
+// In this constructor, we will be saying there's no extra information, since we
+// aren't passing the string to it.
+MatVGL::Engine::StartFailure::StartFailure() : extraInfo_("") {
+  // In both constructors, we will be logging the throw. In POSIX systems we
+  // will be using the syslog.
+  syslog(LOG_ERR, "%s", "Unable to initialize MatVGL");
+}
 
+// In this other constructor, since there is extra information, we can set the
+// private variable accordingly.
 MatVGL::Engine::StartFailure::StartFailure(const char *extraInfo)
-    : extraInfo_(extraInfo) {}
+    : extraInfo_(extraInfo) {
+  std::stringstream ss;
+  ss << "Unable to initialize MatVGL: " << this->extraInfo_;
+  syslog(LOG_ERR, "%s", ss.str().c_str());
 
+  // We do the syslog in the constructors, because this will make the thrown
+  // exception be put into the log even if the user didn't call for the "what()"
+  // function of the exception class.
+}
+
+// In the what function, we will return the passed information.
 const char *MatVGL::Engine::StartFailure::what() const throw() {
+  // This return will happen when there's no extra information (or if the extra
+  // information is "").
   if (extraInfo_ && !extraInfo_[0]) {
-    syslog(LOG_ERR, "%s", "Unable to initialize MatVGL");
     return "Exception thrown. Unable to initialize MatVGL";
   }
 
+  // While here, with a string stream, we will be able to return the rest of the
+  // information.
   std::stringstream ss;
   ss << "Exception thrown. Unable to initialize MatVGL. " << extraInfo_;
-  syslog(LOG_ERR, "%s", ss.str().c_str());
   return ss.str().c_str();
 }
 
 void MatVGL::Engine::startFrame() {
+  // We have to clear the buffers so that everything can be rendered onto them.
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  // TODO: rendering.
 }
 
-void MatVGL::Engine::endFrame() { SDL_GL_SwapWindow(window); }
+void MatVGL::Engine::endFrame() {
+  // TODO: frame capping, cleaning if needed...
+
+  // We have to swap the buffers of the window so that the newly rendered items
+  // can be displayed onto the screen.
+  SDL_GL_SwapWindow(window);
+}
