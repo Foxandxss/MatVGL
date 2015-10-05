@@ -159,6 +159,9 @@ bool MatVGL::Engine::getUserHasXedOut() {
 }
 
 void MatVGL::Engine::start() {
+    // Indicate that the engine is starting.
+    isStarting = true;
+
   // We first initialize the needed SDL modules, and throw an exception on
   // error. Note that the static_cast in these throws is allowing us to combine
   // several string literals and constants into a single one, which is what is
@@ -170,6 +173,8 @@ void MatVGL::Engine::start() {
             << "Failed to initialize the SDL modules: " << SDL_GetError())
             .str()
             .c_str());
+      // When there are exceptions, the engine will not be starting, but failing.
+      isStarting = false;
   }
 
   // Now we set several GL attributes through SDL's functions, and throw
@@ -186,6 +191,7 @@ void MatVGL::Engine::start() {
             << SDL_GetError())
             .str()
             .c_str());
+      isStarting = false;
   }
   if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2) < 0) {
     throw MatVGL::Engine::StartFailure(
@@ -195,6 +201,7 @@ void MatVGL::Engine::start() {
             << SDL_GetError())
             .str()
             .c_str());
+      isStarting = false;
   }
   if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
                           SDL_GL_CONTEXT_PROFILE_CORE) < 0) {
@@ -205,6 +212,7 @@ void MatVGL::Engine::start() {
             << SDL_GetError())
             .str()
             .c_str());
+      isStarting = false;
   }
 
   // Now we can set the window in a centered position.
@@ -227,6 +235,7 @@ void MatVGL::Engine::start() {
                                          << SDL_GetError())
             .str()
             .c_str());
+      isStarting = false;
   }
   // Now that the window is full screen and created, we can set the size
   // variables in the struct to those of the window, so that the struct
@@ -244,6 +253,7 @@ void MatVGL::Engine::start() {
             << "Failed to create the SDL GL context: " << SDL_GetError())
             .str()
             .c_str());
+      isStarting = false;
   }
 
   // After all of this, we will initialize GLEW, checking for possible errors to
@@ -256,6 +266,7 @@ void MatVGL::Engine::start() {
                                          << glewGetErrorString(glewError))
             .str()
             .c_str());
+      isStarting = false;
   }
 
   // With all initialize, we set the default background color.
@@ -263,9 +274,17 @@ void MatVGL::Engine::start() {
                (float)bgColor.b / 250.0f, (float)bgColor.a / 250.0f);
   // And we adjust the viewport to the window by default.
   MatVGL::Engine::adjustViewport();
+
+  // Now we stop starting and we are ready for use.
+  isStarting = false;
+  isReadyForUse = true;
 }
 
 void MatVGL::Engine::stop() {
+    // We aren't ready for use any more and we are shutting down.
+    isReadyForUse = false;
+    isStopping = true;
+
   // This is a cleaning function, equivalent to a destructor in a class. We need
   // to destroy everything we've created and quit all of the SDL modules.
   if (context) {
@@ -275,6 +294,9 @@ void MatVGL::Engine::stop() {
     SDL_DestroyWindow(window);
   }
   SDL_Quit();
+
+  // We finished stopping.
+  isStopping = false;
 }
 
 void MatVGL::Engine::startFrame() {
