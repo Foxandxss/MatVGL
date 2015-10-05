@@ -3,6 +3,7 @@ Cross platform game engine.
 
 Example program:
 ----------------------------------------------------------
+```c++
     // main.cpp
     #include <iostream>
 
@@ -28,4 +29,5 @@ Example program:
 
       return 0;
     }
+```
 ---------------------------------------------------------
