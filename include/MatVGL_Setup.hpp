@@ -14,32 +14,43 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+//////////////////////////////////////////////////////////////////////////////
+/// \file MatVGL_Setup.hpp
+/// \brief Header file for the library setup.
+///
+/// Sets the library up for portability. This is the only file that should hold
+/// precompiler defines, OS checks and specific includes for the OS.
+//////////////////////////////////////////////////////////////////////////////
+
 #ifndef MATVGL_SETUP_HPP
 #define MATVGL_SETUP_HPP
 
+// Look for POSIX systems.
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
 // The includes needed.
-#include <cstdint>
-#include <sstream>
-#include <syslog.h>
+#include <cstdint>  ///< Standard integer sizes.
+#include <sstream>  ///< String streams.
+#include <syslog.h> ///< System logs.
 
-#include <GL/glew.h>
+#include <GL/glew.h> ///< GLEW utils.
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
+#include <SDL2/SDL.h>        ///< The SDL2 wrapper.
+#include <SDL2/SDL_opengl.h> ///< The SDL2 wrapper for OpenGL.
 
-#include <GL/gl.h>
+#include <GL/gl.h> ///< The OpenGL library.
 
 // The typedefs.
-typedef SDL_Window MatVGL_Window;
-typedef SDL_GLContext MatVGL_Context;
-typedef SDL_Event MatVGL_Event;
+typedef SDL_Window MatVGL_Window; ///< Change the window name for portability.
+typedef SDL_GLContext
+    MatVGL_Context; ///< Change the GL context for portability.
+typedef SDL_Event
+    MatVGL_Event; ///< Change the window event name for portability.
 
 // Usings.
-using Int16 = int16_t;
-using Int32 = int32_t;
-using UInt32 = uint32_t;
+using Int16 = int16_t;   ///< Change the int16_t name for portability.
+using Int32 = int32_t;   ///< Change the int32_t name for portability.
+using UInt32 = uint32_t; ///< Change the uint32_t name for portability.
 
 #endif // POSIX systems
 
