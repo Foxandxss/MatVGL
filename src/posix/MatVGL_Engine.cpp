@@ -277,6 +277,21 @@ void MatVGL::Engine::stop() {
   SDL_Quit();
 }
 
+void MatVGL::Engine::startFrame() {
+  // We have to clear the buffers so that everything can be rendered onto them.
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  // TODO: rendering.
+}
+
+void MatVGL::Engine::endFrame() {
+  // TODO: frame capping, cleaning if needed...
+
+  // We have to swap the buffers of the window so that the newly rendered items
+  // can be displayed onto the screen.
+  SDL_GL_SwapWindow(window);
+}
+
 // In this constructor, we will be saying there's no extra information, since we
 // aren't passing the string to it.
 MatVGL::Engine::StartFailure::StartFailure() : extraInfo_("") {
@@ -311,19 +326,4 @@ const char *MatVGL::Engine::StartFailure::what() const throw() {
   std::stringstream ss;
   ss << "Exception thrown. Unable to initialize MatVGL. " << extraInfo_;
   return ss.str().c_str();
-}
-
-void MatVGL::Engine::startFrame() {
-  // We have to clear the buffers so that everything can be rendered onto them.
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-  // TODO: rendering.
-}
-
-void MatVGL::Engine::endFrame() {
-  // TODO: frame capping, cleaning if needed...
-
-  // We have to swap the buffers of the window so that the newly rendered items
-  // can be displayed onto the screen.
-  SDL_GL_SwapWindow(window);
 }
